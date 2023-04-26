@@ -2,35 +2,33 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import Link from 'next/link';
 
 const inter = Inter({ subsets: ['latin'] })
 
+
 export default function Home({ customers }) {
-  // const [data, setData] = useState([]);
+  const [token, setToken] = useState('');
 
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     const response = await fetch("http://127.0.0.1:8000/api/v1/persons/");
-  //     const data = await response.json();
-  //     setData(data);
-  //   }
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    // Ensure we're working on the client side
+    if(typeof window !== 'undefined') {
+      const token = localStorage.getItem('access_token')
+      if (token) setToken(token)
+    }
+  }, [])
 
-  // if (!data) {
-  //   return <div>Loading...</div>;
-  // }
+  const logout = () => {
+    localStorage.removeItem('access_token');
+    setToken('');
+  }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      { token ? <a onClick={logout}>Logout</a> : <Link href={'/auth/login'}>Login</Link> }
       <h1 className="text-6xl font-bold">Welcome to ZenFed CRM!</h1>
-      {/* { data && data.map((person) => {
-          return <>
-            <li>{person?.first_name}, {person?.last_name}, {person?.email}, {person?.phone_number}</li>
-          </>
-        })
-      } */}
-      { customers && customers.map((person) => {
+
+      { customers && customers.map((person: any) => {
           return <>
             <li>{person?.first_name}, {person?.last_name}, {person?.email}, {person?.phone_number}</li>
           </>
@@ -42,7 +40,7 @@ export default function Home({ customers }) {
 
 export async function getStaticProps() {
   // Fetch customer data from an API endpoint
-  const res = await axios.get('http://127.0.0.1:8000/api/v1/persons/');
+  const res = await axios.get('http://127.0.0.1:8000/persons/');
   const customers = await res.data;
 
   return {
