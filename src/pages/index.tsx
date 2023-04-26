@@ -3,11 +3,19 @@ import { Inter } from 'next/font/google'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
+import { useSelector, useDispatch } from 'react-redux'
+import { increment } from '@/store/reducers/auth'
+
 
 const inter = Inter({ subsets: ['latin'] })
 
 
-export default function Home({ customers }) {
+export default function Home({ customers }: any) {
+  // Redux
+  const count = useSelector((state: any) => state.auth.value)
+  const dispatch = useDispatch()
+
+  //Local state
   const [token, setToken] = useState('');
 
   useEffect(() => {
@@ -34,6 +42,10 @@ export default function Home({ customers }) {
           </>
         })
       }
+
+      {/* Testing Redux */}
+      <div>{count}</div>
+      <button onClick={() => dispatch(increment())}>Increment</button>
     </main>
   )
 }
