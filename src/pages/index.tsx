@@ -8,6 +8,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { increment, amountAdded } from '@/pages/auth/auth-slice'
 
+import { useFetchBreedsQuery } from '@/pages/dogs/dogs-api-slice';
+
 const inter = Inter({ subsets: ['latin'] })
 
 
@@ -35,6 +37,8 @@ export default function Home({ customers }: any) {
     setToken('');
   }
 
+  const { data = [], isFetching } = useFetchBreedsQuery(2)
+
   function handleClick() {
     dispatch(increment())
   }
@@ -58,6 +62,31 @@ export default function Home({ customers }: any) {
       <div>{count}</div>
       <button onClick={handleClick}>Increment</button>
       <button onClick={handleAmount}>Amount Added</button>
+
+      <h1>Dogs</h1>
+      <div>
+        <p>Number of dogs fetched: {data.length}</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Picture</th>
+            </tr>
+          </thead>
+
+          <tbody>
+              {data.map((breed) => (
+                <tr key={breed.id}>
+                  <td>{breed.name}</td>
+                  <td>
+                    <img src={breed.image.url} alt={breed.name} height={250}/>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
     </main>
   )
 }
