@@ -1,12 +1,27 @@
-// store.js
-
 import { configureStore } from '@reduxjs/toolkit';
+import authReducer from '@/pages/auth/auth-slice'
 
-import rootReducer from './reducers';
-
-const store = configureStore({
-  reducer: rootReducer,
-  devTools: process.env.NODE_ENV !== 'production',
+export const store = configureStore({
+  // Automatically invokes combineReducers
+  reducer: {
+    auth: authReducer
+  },
 });
 
-export default store;
+// Shown here: https://youtu.be/9zySeP5vH9c?t=2391
+export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>
+
+
+/**Modern React redux
+- React Redux hooks
+- Redux toolkit for the store setup and logic
+- Recommended patterns like putting the logic in one place
+- Using type script
+- Export type hooks
+**/
+
+
+
+
+

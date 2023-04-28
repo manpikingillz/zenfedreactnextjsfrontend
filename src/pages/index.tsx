@@ -4,16 +4,20 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux'
-import { increment } from '@/store/reducers/auth'
 
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { increment, amountAdded } from '@/pages/auth/auth-slice'
 
 const inter = Inter({ subsets: ['latin'] })
 
 
 export default function Home({ customers }: any) {
   // Redux
-  const count = useSelector((state: any) => state.auth.value)
-  const dispatch = useDispatch()
+  // const count = useSelector((state: any) => state.auth.value)
+  // const dispatch = useDispatch()
+
+  const count = useAppSelector((state) => state.auth.value)
+  const dispatch = useAppDispatch()
 
   //Local state
   const [token, setToken] = useState('');
@@ -31,6 +35,13 @@ export default function Home({ customers }: any) {
     setToken('');
   }
 
+  function handleClick() {
+    dispatch(increment())
+  }
+  function handleAmount() {
+    dispatch(amountAdded(3))
+  }
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       { token ? <a onClick={logout}>Logout</a> : <Link href={'/auth/login'}>Login</Link> }
@@ -45,7 +56,8 @@ export default function Home({ customers }: any) {
 
       {/* Testing Redux */}
       <div>{count}</div>
-      <button onClick={() => dispatch(increment())}>Increment</button>
+      <button onClick={handleClick}>Increment</button>
+      <button onClick={handleAmount}>Amount Added</button>
     </main>
   )
 }
