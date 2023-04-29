@@ -32,9 +32,18 @@ export const personsSlice = createApi({
                 query() {
                     return `/persons/1`
                 }
+            }),
+            addPerson: builder.mutation({
+                query(person) {
+                    return {
+                        url: '/persons',
+                        method: 'POST',
+                        body: person
+                    }
+                }
             })
         }
     }
 })
 
-export const { useFetchPersonsQuery, useFetchPersonQuery } = personsSlice;
+export const { useFetchPersonsQuery, useFetchPersonQuery, useAddPersonMutation } = personsSlice;
