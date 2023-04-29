@@ -27,9 +27,14 @@ export const personsSlice = createApi({
                 query() {
                     return `/persons`
                 }
+            }),
+            fetchPerson: builder.query<Person, number|void>({
+                query() {
+                    return `/persons/1`
+                }
             })
         }
     }
 })
 
-export const { useFetchPersonsQuery } = personsSlice;
+export const { useFetchPersonsQuery, useFetchPersonQuery } = personsSlice;

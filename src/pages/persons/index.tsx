@@ -1,12 +1,14 @@
-import { useFetchPersonsQuery } from '@/pages/persons/persons-api-slice'
+import { useFetchPersonsQuery, useFetchPersonQuery } from '@/pages/persons/persons-api-slice'
 
 const Person = () => {
 
-    const { data = [], isFetching } = useFetchPersonsQuery()
+    const { data: persons = [], isFetching: isFetchingPersons } = useFetchPersonsQuery()
+    const { data: person = {}, isFetching: isFetchingPerson } = useFetchPersonQuery()
 
+    if (isFetchingPersons) return <h1>Fetching Persons....</h1>
     return (
     <main>
-        <h2>Customers</h2>
+        <h2><b>Persons</b></h2>
 
         <table>
           <thead>
@@ -20,7 +22,7 @@ const Person = () => {
           </thead>
 
           <tbody>
-              {data.map((person: any) => (
+              {persons.map((person: any) => (
                 <tr key={person.id}>
                   <td>{person.first_name}</td>
                   <td>{person.last_name}</td>
@@ -31,6 +33,14 @@ const Person = () => {
               ))}
           </tbody>
         </table>
+
+        <br/>
+        <h1><b>Single Person</b></h1>
+
+        <div>
+            { person?.first_name }
+        </div>
+
     </main>
     )
 }
