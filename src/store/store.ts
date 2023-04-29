@@ -1,15 +1,17 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import authReducer from '@/pages/auth/auth-slice'
 import { apiSlice } from '@/pages/dogs/dogs-api-slice';
+import { personsSlice } from '@/pages/persons/persons-api-slice'
 
 export const store = configureStore({
   // Automatically invokes combineReducers
   reducer: {
     auth: authReducer,
-    [apiSlice.reducerPath]: apiSlice.reducer
+    [apiSlice.reducerPath]: apiSlice.reducer,
+    [personsSlice.reducerPath]: personsSlice.reducer
   },
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat(apiSlice.middleware);
+    return getDefaultMiddleware().concat(apiSlice.middleware, personsSlice.middleware);
   }
 });
 
