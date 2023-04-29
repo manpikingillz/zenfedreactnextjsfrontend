@@ -21,12 +21,14 @@ export const personsSlice = createApi({
         //     return headers
         // }
     }),
+    tagTypes: ['PersonsTag'],
     endpoints(builder) {
         return {
             fetchPersons: builder.query<Person[], number|void>({
                 query() {
                     return `/persons`
-                }
+                },
+                providesTags: ['PersonsTag']
             }),
             fetchPerson: builder.query<Person, number|void>({
                 query() {
@@ -40,7 +42,9 @@ export const personsSlice = createApi({
                         method: 'POST',
                         body: person
                     }
-                }
+                },
+                // Invalidate cache when new person is added 
+                invalidatesTags: ['PersonsTag']
             })
         }
     }
