@@ -28,7 +28,10 @@ export const personsSlice = createApi({
                 query() {
                     return `/persons`
                 },
-                providesTags: ['PersonsTag']
+                providesTags: ['PersonsTag'],
+                transformResponse(res: any) { 
+                    return res.sort((a:any, b:any) => b.id - a.id)
+                }
             }),
             fetchPerson: builder.query<Person, number|void>({
                 query() {
